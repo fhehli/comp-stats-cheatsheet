@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit.loess} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{loess}\PYG{p}{(}\PYG{n}{y} \PYG{o}{\PYGZti{}} \PYG{n}{x}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n+nf}{data.frame}\PYG{p}{(}\PYG{n}{x}\PYG{o}{=}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{o}{=}\PYG{n}{y\PYGZus{}pert}\PYG{p}{)}\PYG{p}{,} \PYG{n}{span}\PYG{o}{=}\PYG{l+m}{0.2971339}\PYG{p}{,} \PYG{n}{surface}\PYG{o}{=}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{direct\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{fit.loess.pred} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{predict}\PYG{p}{(}\PYG{n}{fit.loess}\PYG{p}{,} \PYG{n}{newdata}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}
+\end{Verbatim}

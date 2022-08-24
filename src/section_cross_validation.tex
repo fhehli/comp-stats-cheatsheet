@@ -1,0 +1,23 @@
+\section{Cross Validation}\label{sec:cross-validation}
+Let $(X_{1}, Y_{1}), \dots, (X_{n}, Y_{n})$ i.i.d $\sim P$.
+We would like to compute $\mathbb{E}_{(X_{\textrm new}, Y_{\textrm new})}[\rho(\vec{Y}_{\textrm new}, \hat{m}_{\textrm train} (X_{\textrm new}))]$.
+\begin{sectionbox}[Constructing cross-validation datasets]\nospacing{}
+  Approaches include
+  \begin{description}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
+    \item[Validation set:] ---
+    \item[Leave-one-out CV:] $n^{-1}\sum_{i=1}^{n}\rho\left(Y_{i}, \hat{m}_{n-1}^{(-i)}(X_{i})\right)$ ca. unbiased.
+    \item[k-fold CV:] $K^{-1}\sum_{i=1}^{K}|\mathcal{B}_{k}|^{-1}\sum_{i\in\mathcal{B}_{k}}\rho\left(Y_{i}, \hat{m}_{n-|\mathcal{B}_{k}|}^{(-\mathcal{B}_{k})}(X_{i})\right)$. Smaller variance than LOOCV.
+    \item[Random division:] Like k-fold, but build $\mathcal{B}_{k}$ by sampling without replacement ($\approx 10\%$). Usually fastest.
+  \end{description}
+\end{sectionbox}
+\begin{sectionbox}[Tricks using hat matrix]\nospacing{}
+  For linear fitting operators and the loss $\rho(y, x) = (y-x)^{2}$ we can exploit the hat matrix and get the full LOOCV result in a single step using
+  \[
+    n^{-1}\sum_{i=1}^{n}\left(Y_{i}-\hat{m}_{n-1}^{(-i)}(X_{i})\right)^{2} = n^{-1}\sum_{i=1}^{n}\left(\frac{Y_{i}-\hat{m}(X_{i})}{1-\mathcal{S}_{ii}}\right)^{2}.
+  \]
+  It can be cheaper to just compute $\mathbf{tr}(\mathcal{S})$ (instead of all $\mathcal{S}_{ii}$), which leads to the \emph{generalized cross-validation}
+  \[
+    GCV = \frac{n^{-1}\sum_{i=1}^{n}(Y_{i}-\hat{m}(X_{i}))^{2}}{(1-n^{-1}\mathbf{tr}(\mathcal{S}))^{2}}.
+  \]
+  The two equations coincide if $\mathcal{S}_{ii}=c\ \forall i$.
+\end{sectionbox}

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{rf} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{randomForest}\PYG{p}{(}\PYG{n}{Boston.train}\PYG{p}{,} \PYG{n}{y.train}\PYG{p}{,} \PYG{n}{xtest}\PYG{o}{=}\PYG{n}{Boston.test}\PYG{p}{,} \PYG{n}{ytest}\PYG{o}{=}\PYG{n}{y.test}\PYG{p}{,} \PYG{n}{ntree}\PYG{o}{=}\PYG{l+m}{500}\PYG{p}{,} \PYG{n}{mtry}\PYG{o}{=}\PYG{n+nf}{ncol}\PYG{p}{(}\PYG{n}{Boston.train}\PYG{p}{)}\PYG{p}{)}
+\PYG{n+nf}{mean}\PYG{p}{(}\PYG{n}{rf}\PYG{o}{\PYGZdl{}}\PYG{n}{mse}\PYG{p}{)}
+\PYG{n+nf}{mean}\PYG{p}{(}\PYG{n}{rf}\PYG{o}{\PYGZdl{}}\PYG{n}{test}\PYG{o}{\PYGZdl{}}\PYG{n}{mse}\PYG{p}{)} \PYG{o}{\PYGZdl{}}
+\end{Verbatim}

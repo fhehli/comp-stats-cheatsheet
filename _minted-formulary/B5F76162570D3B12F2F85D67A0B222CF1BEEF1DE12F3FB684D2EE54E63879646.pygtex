@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{require}\PYG{p}{(}\PYG{n}{MASS}\PYG{p}{)}\PYG{p}{;}\PYG{n}{fit.gamma}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{fitdistr}\PYG{p}{(}\PYG{n}{boogg}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{gamma\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{par.est}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n}{fit.gamma}\PYG{o}{\PYGZdl{}}\PYG{n}{estimate} \PYG{o}{\PYGZdl{}} \PYG{c+c1}{\PYGZsh{} for parametric gen}
+\PYG{n}{boot.est} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{matrix}\PYG{p}{(}\PYG{k+kc}{NA}\PYG{p}{,} \PYG{n}{nrow}\PYG{o}{=}\PYG{n}{R}\PYG{p}{,} \PYG{n}{ncol}\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{)}
+\PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{i} \PYG{n}{in} \PYG{l+m}{1}\PYG{o}{:}\PYG{n}{R}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{n}{boogg.s}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{rgamma}\PYG{p}{(}\PYG{n}{N}\PYG{p}{,}\PYG{n}{shape}\PYG{o}{=}\PYG{n}{par.est}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}\PYG{n}{rate}\PYG{o}{=}\PYG{n}{par.est}\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{)}
+  \PYG{c+c1}{\PYGZsh{} boogg.s <- sample(boogg, N, replace=T) # NP}
+  \PYG{n}{boot.est}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{quantile}\PYG{p}{(}\PYG{n}{boogg.s}\PYG{p}{,} \PYG{n}{probs}\PYG{o}{=}\PYG{l+m}{0.75}\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}\PYG{p}{;} \PYG{n}{a} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{l+m}{0.05}
+\PYG{c+c1}{\PYGZsh{} QUANTILE}
+\PYG{n+nf}{quantile}\PYG{p}{(}\PYG{n}{boot.est}\PYG{p}{,} \PYG{n}{probs}\PYG{o}{=}\PYG{n+nf}{c}\PYG{p}{(}\PYG{n}{a}\PYG{o}{/}\PYG{l+m}{2}\PYG{p}{,} \PYG{l+m}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{o}{/}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{} NORMAL APPROXIMATION}
+\PYG{n}{mean.est} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{mean}\PYG{p}{(}\PYG{n}{boot.est}\PYG{p}{)}
+\PYG{n}{sd.hat}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{sqrt}\PYG{p}{(}\PYG{l+m}{1}\PYG{o}{/}\PYG{p}{(}\PYG{n}{R}\PYG{l+m}{\PYGZhy{}1}\PYG{p}{)}\PYG{o}{*}\PYG{n+nf}{sum}\PYG{p}{(}\PYG{p}{(}\PYG{n}{boot.est}\PYG{o}{\PYGZhy{}}\PYG{n}{mean.est}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
+\PYG{l+m}{2}\PYG{o}{*}\PYG{n}{est}\PYG{o}{\PYGZhy{}}\PYG{n}{mean.est} \PYG{o}{+} \PYG{n+nf}{c}\PYG{p}{(}\PYG{l+m}{\PYGZhy{}1}\PYG{p}{,} \PYG{l+m}{+1}\PYG{p}{)}\PYG{o}{*} \PYG{n+nf}{qnorm}\PYG{p}{(}\PYG{l+m}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{o}{/}\PYG{l+m}{2}\PYG{p}{)}\PYG{o}{*}\PYG{n}{sd.hat}
+\PYG{c+c1}{\PYGZsh{} REVERSED QUANTILE}
+\PYG{n}{est} \PYG{o}{\PYGZhy{}} \PYG{n+nf}{quantile}\PYG{p}{(}\PYG{n}{boot.est}\PYG{o}{\PYGZhy{}}\PYG{n}{est}\PYG{p}{,} \PYG{n}{probs}\PYG{o}{=}\PYG{n+nf}{c}\PYG{p}{(}\PYG{l+m}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{o}{/}\PYG{l+m}{2}\PYG{p}{,} \PYG{n}{a}\PYG{o}{/}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
+\end{Verbatim}

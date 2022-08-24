@@ -1,0 +1,92 @@
+\section{Bootstrap}\label{sec:bootstrap}
+Efron's \emph{parametric} and \emph{nonparametric bootstrap} can be described as ``simulating from an estimated model'' and can be used for \emph{statistical inference (confidence intervals and testing)} and \emph{estimating the predictive power of a model or algorithm}.
+
+\begin{sectionbox}[Nonparametric Bootstrap]\nospacing{}
+  Let $Z_{1:n}$ i.i.d $\sim P$ with $Z_i=(X_i, Y_i), X_i \in \mathbb{R}^p, Y_i \in \mathbb{R}$, and let $\hat \theta_n = g(Z_{1:n})$ be an estimator.
+  We would like to know the \emph{distribution of $\hat \theta_n$}.
+  We approximate $\vec{P}$ by the \emph{empirical distribution} $\hat{P}_n$.
+  Then we can repeatedly sample $Z_{1:n}^* \sim \hat P_n$ independently and compute $\hat\theta_n^* = g(Z_{1:n}^*)$.
+  The histogram (or any density estimator) then describes the distribution of $\hat{\theta}_n^*$.
+  The algorithm reads
+  \begin{enumeratenosep}
+    \item Sample (with replacement) $Z_{1:n}^\ast$ i.i.d $\sim \hat P_n$.
+    \item Compute the bootstrapped estimator $\hat\theta_n^\ast=g(Z_{1:n}^\ast)$.
+    \item Repeat $B$ times to obtain $\hat \theta_n^{\ast 1:B}$.
+    \item Approximate $\mathbb{E}^\ast[\hat\theta_n^\ast] \approx B^{-1}\sum_{i=1}^B\hat\theta_n^{\ast i}$ and $Var^\ast(\hat\theta_n^\ast) \approx (B-1)^{-1}\sum_{i=1}^B\left(\hat\theta_n^{\ast i} - B^{-1}\sum_{j=1}^B \hat\theta_n^{\ast j}\right)^2$.
+      Then $\alpha$-quantile of $\hat\theta_n^\ast \approx $ empirical $\alpha$-quantile of $\hat\theta_n^{\ast 1:B}$.
+  \end{enumeratenosep}
+\end{sectionbox}
+
+\begin{notebox}[Central limit theorem]\nospacing{}
+  Let $X_i$ be a random variable with $\mathbb{E}[X_i] = \mu$ and $Var(X_i) = \sigma^2$. Then $n^{-1}\sum_{i=1}^nX_i \overset{n\to \infty}{\to} \mathcal{N}(\mu, \sigma^2/n)$.
+\end{notebox}
+\begin{notebox}[Bootstrap consistence]\nospacing{}
+  Consistency of the bootstrap typically holds if the limiting distribution of $\hat \theta_n$ is Normal and if $Z_{1:n}$ are i.i.d. 
+  Mathematically, for an increasing sequence $a_n$ and $\forall x$, $\mathbb{P}[a_n(\hat\theta_n-\theta)\leq x] - \mathbb{P}^\ast[a_n(\hat\theta_n^\ast - \hat \theta_n) \leq x] \overset{P}\to 0 \text{ as } n \to \infty$.
+  Then $Op^\ast(\hat\theta_n^\ast)/Op(\hat\theta_n) \overset{P}{\to} 1$ with $Op \in \{Var, \mathbb{E}\}$.
+\end{notebox}
+
+\begin{sectionbox}[Bootstrap confidence intervals]\nospacing{}
+  Given bootstrap consistence, we can compute confidence intervals: 
+  \begin{enumeratenosep}[label=\roman*]
+    \item quantile: $ [q_{\hat{\Theta}^{\ast}}(\alpha/2), q_{\hat{\Theta}^{\ast}}(1-\alpha/2)]  $
+    \item rev. quantile: $ [\hat{\Theta} - q_{\hat{\Theta}^{\ast}-\hat{\Theta}}(1-\alpha/2), \hat{\Theta} - q_{\hat{\Theta}^{\ast}-\hat{\Theta}}(\alpha/2)]   $
+    \item normal: $2\hat{\Theta}-\overline{\hat{\Theta}^*} \pm q_X(1-\alpha/2)\cdot \hat{sd}(\hat{\Theta})$ \\ ($X \sim \mathcal{N}(0,1)$; corrects for bias $\hat{\Theta} - \hat{\Theta}^{\ast}$) 
+  \end{enumeratenosep}
+  Note $\hat q_\alpha  = q_\alpha^\ast - \hat \theta_n$ with $q_\alpha^\ast = \alpha$-bootstrap quantile of $\hat\theta_n^\ast$.
+  Thus $[\hat\theta_n -\hat q_{1-\alpha/2},\hat \theta_n - \hat q_{\alpha/2}] = [2\hat \theta_n - q_{1-\alpha/2}^\ast, 2\hat\theta_n-q_{\alpha/2}^\ast]$.
+\end{sectionbox}
+\begin{mintlinebox}{R}
+  require("boot")
+  tm = function(x, ind) {mean(x[ind], trim = 0.1)}
+  res.boot = boot(data=sample, statistic=tm, R=1000)
+  boot.ci(res.boot, conf=0.95, type=c("basic","norm","perc"))
+  # "basic"=reverse quantile, "norm"=normal, "perc"=quantile
+\end{mintlinebox}
+
+\begin{mintlinebox}{R}
+  # CIs by hand
+  require(MASS); mle = fitdistr(boogg, "gamma")$estimate
+  boot.est = matrix(NA, nrow=R, ncol=1)
+  for (i in 1:R) {
+    boogg.s = rgamma(N, shape=mle[1], rate=mle[2])
+    # boogg.s = sample(boogg, N, replace=T) # NP
+    boot.est[i] = quantile(boogg.s, probs=0.75)
+  }; a = 0.05
+  # Quantile
+  quantile(boot.est, probs=c(a/2, 1-a/2))
+  # Normal
+  mean.est = mean(boot.est)
+  sd.hat = sqrt(1/(R-1)*sum((boot.est - mean.est)^2))
+  2*est-mean.est + c(-1,1)*qnorm(1-a/2)*sd.hat
+  # Reverse quantile
+  est - quantile(boot.est-est, probs=c(1-a/2, a/2))
+\end{mintlinebox}
+
+\begin{sectionbox}[Double bootstrap]
+  Idea: Find $\alpha'$ s.t. actual coverage of bootstrap CI $I^{\ast}(1-\alpha')$ is equal to $\alpha$.
+  \begin{enumeratenosep}[label=\roman*]
+    \item Draw BS sample $Z^{\ast}$. Sample from $Z^{\ast}$ to obtain $Z^{\ast\ast}$. Compute CI $I^{\ast\ast}(1-\alpha)$ for $\hat{\Theta}^{\ast}$ based on $B$ draws $Z^{\ast\ast}$. Compute coverage of $\hat{\Theta}$ by $I^{\ast\ast}$ (1 or 0).
+    \item Repeat i) $M$ times to obtain $M$ coverage values. Compute mean to obtain actual coverage of $I^{\ast\ast}$.
+    \item Vary $\alpha'$ and repeat previous steps to find $\alpha'$ with $\operatorname{coverage}(I^{\ast\ast}(1-\alpha')) = 1 -\alpha$. Use CI $I^{\ast}(1-\alpha')$.
+  \end{enumeratenosep}
+\end{sectionbox}	
+
+\begin{sectionbox}[Parametric Bootstrap]
+  Assume $Z = (Z_1,..,Z_n) ~i.i.d. \sim P_{\Theta}$. Fit $\hat{\Theta} = \operatorname{MLE}$ and generate samples $Z^{\ast} ~i.i.d. \sim P_{\hat{\Theta}}$. Usually better than nonparametric version when $P_{\hat{\Theta}}$ is a good fit (e.g. known model structure $P$) and few data points available.
+  \begin{mintlinebox}{R}
+    require(MASS); fit.gamma = fitdistr(boogg, "gamma")
+    fun.theta = function(x) {quantile(x, probs=0.75)}
+    fun.gen = function(x, mle) {rgamma(length(x), shape=mle[1], rate=mle[2])}
+    res.boot = boot(data, fun.theta, R=1000, sim="parametric", ran.gen=fun.gen, mle=fit.gamma$estimate);
+  \end{mintlinebox}		
+\end{sectionbox}	
+
+\begin{sectionbox}[Bootstrap error estimate]
+  Generalization error (loss $\rho(y,m(x))$) of model $m$ (fitted to full data set) can be estimated by fitting models $m^{\ast,i}$ to bootstrap samples and computing
+  \begin{itemize}
+    \item errors on full data set $e^{\ast,i} = n^{-1}\sum_{i=1}^n \rho(y,m^{\ast,i}(x_i)) $
+    \item OOB errors $e^{\ast,i}_{ob} = n_{ob,i}^{-1}\sum_{i=1}^{n_{ob,i}} \rho(y_{ob,i},m^{\ast,i}(x_{ob,i})) $
+  \end{itemize}
+  The error of $m$ is then approximated by $R^{-1}\sum_{i=1}^R e^{\ast,i}$.		
+\end{sectionbox}

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{gam}\PYG{p}{(}\PYG{n}{Y} \PYG{o}{\PYGZti{}} \PYG{n+nf}{s}\PYG{p}{(}\PYG{n}{x1}\PYG{p}{)} \PYG{o}{+} \PYG{n+nf}{s}\PYG{p}{(}\PYG{n}{x2}\PYG{p}{)} \PYG{o}{+} \PYG{k+kc}{...}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{)}
+\PYG{n+nf}{plot}\PYG{p}{(}\PYG{n}{fit}\PYG{p}{,} \PYG{n}{pages}\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{,} \PYG{n}{shade}\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
+\PYG{n}{sfsmisc}\PYG{o}{::}\PYG{n+nf}{TA.plot}\PYG{p}{(}\PYG{n}{fit}\PYG{p}{,} \PYG{n}{labels}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{o\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

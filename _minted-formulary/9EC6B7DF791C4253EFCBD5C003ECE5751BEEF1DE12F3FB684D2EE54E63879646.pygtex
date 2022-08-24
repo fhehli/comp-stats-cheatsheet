@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{\PYGZsh{} Construct S matrix}
+\PYG{n}{N} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{p}{;} \PYG{n}{Eye} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{diag}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)}
+\PYG{n}{S.nw} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{S.lp} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{S.ss} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{matrix}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{,} \PYG{n}{nrow}\PYG{o}{=}\PYG{n}{N}\PYG{p}{,} \PYG{n}{ncol}\PYG{o}{=}\PYG{n}{N}\PYG{p}{)}
+\PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{j} \PYG{n}{in} \PYG{l+m}{1}\PYG{o}{:}\PYG{n}{N}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{n}{y\PYGZus{}} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{Eye}\PYG{p}{[}\PYG{p}{,} \PYG{n}{j}\PYG{p}{]}
+\PYG{n}{S.nw}\PYG{p}{[}\PYG{p}{,} \PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{ksmooth}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y\PYGZus{}}\PYG{p}{,} \PYG{n}{kernel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{normal\PYGZdq{}}\PYG{p}{,} \PYG{n}{bandwidth}\PYG{o}{=}\PYG{l+m}{0.2}\PYG{p}{,} \PYG{n}{x.points}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZdl{}}\PYG{n}{y} \PYG{p}{;}\PYG{o}{\PYGZdl{}}\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{est.nw}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n}{est.lp}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n}{est.ss}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{matrix}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{,}\PYG{n}{nrow}\PYG{o}{=}\PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{p}{,}\PYG{n}{ncol}\PYG{o}{=}\PYG{n}{nrep}\PYG{p}{)}
+\PYG{n+nf}{for }\PYG{p}{(}\PYG{n}{i} \PYG{n}{in} \PYG{l+m}{1}\PYG{o}{:}\PYG{n}{nrep}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{\PYGZsh{} generate y with disturbance}
+  \PYG{n}{y\PYGZus{}pert} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{y} \PYG{o}{+} \PYG{n+nf}{rnorm}\PYG{p}{(}\PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{p}{,} \PYG{n}{mean}\PYG{o}{=}\PYG{l+m}{0}\PYG{p}{,} \PYG{n}{sd}\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{)}
+  \PYG{c+c1}{\PYGZsh{} try to fit NW}
+  \PYG{n}{est.nw}\PYG{p}{[}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{ksmooth}\PYG{p}{(}\PYG{n}{x}\PYG{o}{=}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{o}{=}\PYG{n}{y\PYGZus{}pert}\PYG{p}{,} \PYG{n}{kernel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{normal\PYGZdq{}}\PYG{p}{,} \PYG{n}{bandwidth}\PYG{o}{=}\PYG{l+m}{0.2}\PYG{p}{,} \PYG{n}{x.points}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZdl{}}\PYG{n}{y} \PYG{p}{;}\PYG{o}{\PYGZdl{}}
+  \PYG{n}{sig\PYGZus{}sq.nw} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{sum}\PYG{p}{(}\PYG{p}{(}\PYG{n}{y\PYGZus{}pert} \PYG{o}{\PYGZhy{}} \PYG{n}{est.nw}\PYG{p}{[}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m}{2}\PYG{p}{)} \PYG{o}{/} \PYG{p}{(}\PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{y}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n+nf}{sum}\PYG{p}{(}\PYG{n+nf}{diag}\PYG{p}{(}\PYG{n}{S.nw}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{se.nw}\PYG{p}{[}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{sqrt}\PYG{p}{(}\PYG{n}{sig\PYGZus{}sq.nw} \PYG{o}{*} \PYG{n+nf}{diag}\PYG{p}{(}\PYG{n}{S.nw} \PYGZbs{}\PYG{o}{\PYGZpc{}*\PYGZbs{}\PYGZpc{}} \PYG{n+nf}{t}\PYG{p}{(}\PYG{n}{S.nw}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

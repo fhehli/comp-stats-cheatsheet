@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{library}\PYG{p}{(}\PYG{n}{nnet}\PYG{p}{)}\PYG{p}{;} \PYG{o}{?}\PYG{n}{nnet} \PYG{o}{?}\PYG{n}{ppr}
+\end{Verbatim}

@@ -1,0 +1,113 @@
+\section{Flexible regression and classification methods}\label{sec:flexible_regression_and_classification_methods}
+We fight the \emph{curse of dimensionality} by making some structural assumptions (although staying with methods $g(\cdot): \mathbb{R}^p \to \mathbb{R}$ of nonparametric nature).
+\subsection{Additive models}%
+\label{sub:additive_models}
+\begin{sectionbox}\nospacing{}
+  Decompose multivariate function as $g_{\textrm add}: \mathbb{R}^p\to\mathbb{R}, x\mapsto \mu + \sum_{j=1}^pg_j(x_j)$ with $g_j(\cdot): \mathbb{R}\to\mathbb{R}$, $\mathbb{E}[g_j(X_j)]=0$.
+  The zero-mean requirement for each $g_j(\cdot)$ makes the problem well posed.
+  This approach is a generalization of linear models, and similarly can not model interaction terms $g_{j,k}(x_j, x_k)$.
+  Due to the way they are constructed, additive linear models \emph{avoid the curse of dimensionality}.
+\end{sectionbox}
+\begin{sectionbox}\nospacing{}
+  To fit a model, let $\mathcal{S}_j$ be a smoothing technique (e.g. \emph{Nadaraya-Watson kernel estimators}).
+  Then, the \textbf{backfitting} algorithm works as follows:
+  \begin{itemizenosep}
+    \item Compute $\hat \mu = n^{-1}\sum_{i=1}^n Y_i$ and initialize $\hat g_j(\cdot) \coloneqq 0$.
+    \item Cycle through the indices $j = 1,2,\dots,p,1,2,\dots$ and update
+      $\hat g_j=\mathcal{S}_j(\vec{Y}-\hat \mu\vec{1}-\sum_{k\neq j}\hat g_k)$.
+      Stop each function at convergence.
+    \item Normalize the functions: $\tilde g_j(\cdot) = \hat g_j(\cdot) - n^{-1}\sum_{i=1}^n\hat g_j(X_{ij})$.
+  \end{itemizenosep}
+  This basically makes the algorithm repeatedly solve the 1-dimensional fitting problem.
+  The algorithm may be slow but often works and can use any 1-dimensional fitting technique.
+\end{sectionbox}
+\begin{sectionbox}\nospacing{}
+  When fitting Additive models in R with the function \verb!gam!, the smoothers $\mathcal{S}_j$ are penalized regression splines, and the degrees of freedom for each spline (i.e. each variable) will be determined through cross-validation.
+
+  \begin{mintlinebox}{R}
+    fit <- gam(Y ~ s(x1) + s(x2) + ..., data=data)
+    plot(fit, pages=1, shade=TRUE)
+    sfsmisc::TA.plot(fit, labels="o")
+  \end{mintlinebox}
+\end{sectionbox}
+
+\subsection{Multivariate adaptive regression splines}%
+\label{sub:multivariate_adaptive_regression_splines}
+\begin{sectionbox}\nospacing{}
+  $g(\mathbf{x}) = \mu + \sum_{m=1}^{M}\beta_m h_m(\mathbf{x}) = \sum_{m=0}^{M}\beta_m h_m(\mathbf{x}) $
+  Find $h \in \mathcal{M}$ functions by foward selection and pruning:
+
+  \begin{enumeratenosep}[label=\roman*]
+    \item Initialize $\mathcal{M} = \{ h_0 = 1\}, \beta_0 = \overline{Y}$
+    \item For $r=1,2,..$: Find best pair (most reduction of RSS) $h_{2r-1}=h_l(\cdot)(x_j-x_{i,j})_{+}, h_{2r}=h_l(\cdot)(x_{i,j}-x_j)_{+}$, where $h_l \in \mathcal{M}$ does not already depend on $x_j$. Estimate $\beta_{2r-1}, \beta_{2r}$ by LS. Add $h_{2r-1}, h_{2r}$ to $\mathcal{M}$.
+    \item Repeat until $\mathcal{M}$ large enough. Prune by repeatedly removing one function from pairs $h_{2r-1}, h_{2r}$ (least increase in RSS). Stop when GCV score is optimized.
+  \end{enumeratenosep}
+  \begin{mintlinebox}{R}
+    require("earth"); 
+    fit <- earth(formula=y~.,data=data, degree=2)
+    plotmo(fit, degree2=FALSE, caption="main effects")
+  \end{mintlinebox}
+\end{sectionbox}	
+
+\subsection{Neural Networks}%
+\label{sub:neural_networks}
+\begin{sectionbox}\nospacing{}
+  $g(\mathbf{x})_k = f_0(\alpha_k + \sum_{h=1}^{q}w_{hk}\sigma(\tilde{\alpha_h} + \sum_{j=1}^{p}\tilde{w}_{jh}x_j)) \forall k=1..J$, $q$ hidden nodes, $J$ output dim. Activation $\sigma(t) = \frac{\exp t}{1 + \exp t}$. For regression, $f_0$ identity, for classification $f_0 = \sigma$ and $\mathcal{C}_{NN} = \argmax_{j} g_j(\mathbf{x})$. Many other architectures possible, e.g. including a component directly connecting input to output by linear regression.
+  \begin{mintlinebox}{R}
+    library(nnet); ?nnet ?ppr 
+  \end{mintlinebox}
+\end{sectionbox}
+
+\subsection{Trees}%
+\label{sub:trees}
+\begin{sectionbox}[Classification and Regression Trees]\nospacing{}
+  Let $g_{\textrm tree}(\mathbf{x}) = \sum_{r=1}^{M}\beta_r 1_{[\mathbf{x}\in \mathcal{R}_r]}$, where $\{\mathcal{R}_1,\dots, \mathcal{R}_M\}$ is a partition of $\mathbb{R}^p$.
+  The function is piecewise constant.
+  When a partition is given,  we can estimate $\hat{\beta}_r = \sum_{i=1}^{n}Y_i 1_{[\mathbf{x}\in \mathcal{R}_r]}/\sum_{i=1}^{n}1_{[\mathbf{x}\in \mathcal{R}_r]}$.
+  For multiclass classification $\hat{\pi}_j(\mathbf{x}) = \sum_{i=1}^{n}1_{[Y_i =j]} 1_{[\mathbf{x}\in \mathcal{R}_r]}/\sum_{i=1}^{n}1_{[\mathbf{x}\in \mathcal{R}_r]}$ for $\mathbf{x} \in \mathcal{R}_r$.
+  Greddy algorithm to find axes parallel partition:
+  \begin{enumeratenosep}[label=\roman*]
+    \item Initialize $M=1$ subset $\mathcal{P} = \{\mathcal{R} = \mathbb{R}^p\}$
+    \item Split $\mathcal{R}$ at $d$ in dimension $j$, where $d$ is from the set of midpoints of observed values.
+      Select $j,d$ s.t. neg. log-likelihood decrease is maximized by refinement.
+    \item Apply ii) to one cell of the current partition (select like above).
+      Add the resulting two cells and remove the refined one. 
+    \item Iterate iii) until until specified max. partition size is achieved.
+    \item Prune tree by removing leaves resulting in smalles increase in some (CV) metric.
+  \end{enumeratenosep}
+  The size of a tree $\mathcal{T}$ is the number of leaves (=1 + cuts).
+  For some goodness-of-fit measure $\mathcal{R}(\mathcal{T})$ (e.g. SSE, NLL), the cost-complexity measure is $\mathcal{R}_{\alpha}(\mathcal{T})=\mathcal{R}(\mathcal{T}) + \alpha \cdot\text{size}(\mathcal{T}) $.
+  For some $\alpha$, we thus choose $\mathcal{T}(\alpha) = \argmin_{\mathcal{T}\subset\mathcal{T}_M}\mathcal{R}_{\alpha}(\mathcal{T})$.
+  The parameter $\alpha$ is chosen by CV. The 1 s.e. rule says: Choose smallest tree such that its performance is at most one standard error larger than the minimal one. 
+\end{sectionbox}
+\begin{mintlinebox}{R}
+  library(rpart); require(rpart.plot); 
+  # cp = \alpha / \mathcal{R}_{\alpha}(\mathcal{T}_{\emptyset})
+  tree = rpart(y~., data=data, control=rpart.control(cp=0.0, minsplit=1)) # unregularized tree
+  plotcp(tree); cps = tree$cptable 
+  idx.min = which.min(cps[, "xerror"])
+  std.min = cps[idx.min, "xstd"]
+  cp.1se = cps[abs(cps[,"xerror"]-cps[idx.min,"xerror"])<std.min,]
+  pruned.tree = prune.rpart(tree, cp=cp.1se[1, "CP"])
+\end{mintlinebox}
+
+
+\begin{mintlinebox}{R}
+  rf <- randomForest(Boston.train, y.train, xtest=Boston.test, ytest=y.test, ntree=ntree, mtry=ncol(Boston.train))
+  rf$mse[ntree] # OOB error
+  rf$test$mse[ntree]
+\end{mintlinebox}
+
+\subsection{Ridge and Lasso}%
+\label{sub:ridge_and_lasso}
+Trade-off between $||\beta||_1$ and $||\beta||_2$ regularization, i.e. $L(\lambda_1, \lambda_2, \vec{\beta})=||\vec{Y}-X\vec{\beta}||_2^2 + \lambda_2||\vec{\beta}||_2^2+\lambda_1||\vec{\beta}||_1$ with $\alpha=\lambda_2/(\lambda_1+\lambda_2)$.
+$\alpha=1 \Leftrightarrow \lambda_2=1$ means full $L_2$-regularization, i.e.\ \emph{Lasso}, otherwise \emph{Ridge}.
+
+\begin{mintlinebox}{R}
+  ridge <- glmnet(x.train, y.train, lambda=100, alpha=1)
+  ridge$beta
+  ridge.cv <- cv.glmnet(x.train, y.train, lambda=grid.lambda, alpha=0, type.measure="mse")
+  mean((predict(ridge.cv, newx=x.test, s="lambda.min") - y.test)^2)
+  lasso.cv <- cv.glmnet(x.train, y.train, lambda=grid.lambda, alpha=1, type.measure="mse")
+  mean((predict(lasso.cv, newx=x.test, s="lambda.min") - y.test)^2) 
+\end{mintlinebox}

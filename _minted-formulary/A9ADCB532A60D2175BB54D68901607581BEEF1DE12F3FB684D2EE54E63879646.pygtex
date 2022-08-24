@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{glmnet}\PYG{p}{(}\PYG{n}{x.train}\PYG{p}{,} \PYG{n}{y.train}\PYG{p}{,} \PYG{n}{lambda}\PYG{o}{=}\PYG{l+m}{100}\PYG{p}{,} \PYG{n}{alpha}\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{)}
+\PYG{n}{fit}\PYG{o}{\PYGZdl{}}\PYG{n}{beta}
+\PYG{n}{fit\PYGZus{}2} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{cv.glmnet}\PYG{p}{(}\PYG{n}{x.train}\PYG{p}{,} \PYG{n}{y.train}\PYG{p}{,} \PYG{n}{lambda}\PYG{o}{=}\PYG{n}{grid.lambda}\PYG{p}{,} \PYG{n}{alpha}\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{,} \PYG{n}{type.measure}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{mse\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nf}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n+nf}{predict}\PYG{p}{(}\PYG{n}{fit\PYGZus{}2}\PYG{p}{,} \PYG{n}{newx}\PYG{o}{=}\PYG{n}{x.test}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{lambda.min\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{y.test}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m}{2}\PYG{p}{)}
+\PYG{n}{fit\PYGZus{}3} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{cv.glmnet}\PYG{p}{(}\PYG{n}{x.train}\PYG{p}{,} \PYG{n}{y.train}\PYG{p}{,} \PYG{n}{lambda}\PYG{o}{=}\PYG{n}{grid.lambda}\PYG{p}{,} \PYG{n}{alpha}\PYG{o}{=}\PYG{l+m}{0}\PYG{p}{,} \PYG{n}{type.measure}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{mse\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nf}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n+nf}{predict}\PYG{p}{(}\PYG{n}{fit\PYGZus{}3}\PYG{p}{,} \PYG{n}{newx}\PYG{o}{=}\PYG{n}{x.test}\PYG{p}{,} \PYG{n}{s}\PYG{o}{=}\PYG{n}{fit\PYGZus{}3}\PYG{o}{\PYGZdl{}}\PYG{n}{lambda.min}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{y.test}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m}{2}\PYG{p}{)}
+\end{Verbatim}

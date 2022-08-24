@@ -1,0 +1,71 @@
+\section{Nonparametric Regression}\label{sec:nonparametric_regression}
+Nonparametric regression with \emph{one} predictor variable, i.e. $Y_{i} = m(x_{i}) + \epsilon_{i}$ with $\epsilon_{1:n}$ i.i.d and $\mathbb{E}[\epsilon_{i}] = 0$. We want $m(x) = \mathbb{E}[Y|x]$ and ``some'' smoothness.
+
+\begin{sectionbox}[Kernel regression estimator]\nospacing{}
+  A ``locally weighted'' approach yields the NW kernel estimator
+  \begin{equation}\label{eq:nw_regressor}
+    \hat m(x) = \frac{\sum_{i=1}^{n} \omega_{i}Y_{i}}{\sum_{i}\omega_{i}} = \argmin_{m_{x} \in \mathbb{R}}\sum_{i=1}^{n}\omega_{i}{(Y_{i}-m_{x})}^{2}
+  \end{equation}
+  with $\omega_{i} = K\left(\frac{x_{i}-x}{h}\right)$ a kernel centered at $x_{i}$ and bandwidth $h$.
+  As $h$ small $\rightarrow$ large then (high variance) $\rightarrow$ (high bias).
+  For $x_{i}$ equidistant there exists $h_{\textrm opt} = f(\sigma_{\epsilon}^{2}, m''(x))$ which can be iteratively found.
+
+  \begin{mintlinebox}{R}
+    ksmooth(x, y, kernel="normal", bandwidth=0.2, x.points=x)$y
+  \end{mintlinebox}
+  %$
+  \begin{mintlinebox}{R}
+    # automatic bandwidth
+    fit.lo<-lokerns(X, Y, x.out=X, hetero=TRUE, is.rand=TRUE)
+    fit.gl<-glkerns(X, Y, x.out=X, hetero=TRUE, is.rand=TRUE)
+  \end{mintlinebox}
+\end{sectionbox}
+
+\begin{sectionbox}[Local polynomial regression estimator]\nospacing{}
+  Instead of finding a local constant $m_{x}$ we can also find a \emph{local polynomial}, i.e.\ we replace $m_{x}$ with $\beta_{1} + \sum_{i=2}^{p} \beta_{i}{(x_{i}-x)}^{i-1}$ (usually $p=2$ or $p=4$).
+  Often better at edges and yields first derivative.
+  \begin{mintlinebox}{R}
+    fit.loess <- loess(y ~ x, data=data.frame(x=x, y=y_pert), span=0.2971339, surface='direct')
+    fit.loess.pred <- predict(fit.loess, newdata=x)
+  \end{mintlinebox}
+\end{sectionbox}
+
+\begin{sectionbox}[The hat matrix $\mathcal{S}$]\nospacing{}
+  We want to construct $\mathcal{S}$ with $\hat{\vec{Y}} = \mathcal{S}\vec{Y}$, i.e.\ the linear operator mapping the labels to the predictions.
+  Given the regression (smoothing) function $s$, we compute $\mathcal{S}_{\cdot j} = s(\vec{x}, \vec{e}_{j}, h)$ with $\vec{e}_{j}$ the $j$-th unit vector.
+  Then $Cov(\hat m(\vec{x})) = Cov(\mathcal{S} \vec{Y}) = \mathcal{S} Cov(\vec{Y}) \mathcal{S}^{\top} = \sigma_{\epsilon}^{2}\mathcal{S}\mathcal{S}^{\top}$. Set $df=\mathbf{tr}S$ and 
+  estimate $\hat{\sigma}_{\epsilon}^{2} = \sum_{i=1}^{n}{(Y_{i} - \hat m(x_{i}))}^{2}/(n-df)$.
+  Then
+  \begin{itemize}
+    \item $\widehat{s.e.}(\hat m(x_{i})) = \sqrt{\widehat{Var}(\hat m(x_{i}))} = \hat \sigma_{\epsilon} \sqrt{{(\mathcal{S}\mathcal{S}^{\top})}_{ii}}$
+    \item $\hat m(x_{i}) \approx \mathcal{N}\left(\mathbb{E}[\hat m(x_{i})], Var(\hat m(x_{i}))\right)$
+    \item $I = \hat m(x_{i}) \pm 1.96 \cdot \widehat{s.e.}(\hat m(x_{i}))$ $\rightarrow$ (pointwise) CI
+  \end{itemize}
+\begin{mintlinebox}{R}
+  # Construct S matrix
+  N <- length(x); Eye <- diag(N)
+  S.nw <- matrix(0, nrow=N, ncol=N)
+  for (j in 1:N) {
+    y_ <- Eye[, j]
+    S.nw[, j] <- ksmooth(x, y_, kernel="normal", bandwidth=0.2, x.points=x)$y
+  }
+  # Compute standard error
+  est.nw <- ksmooth(x=x, y=y, kernel="normal", bandwidth=0.2, x.points=x)$y
+  sig_sq.nw <- sum((y - est.nw)^2) / (N - sum(diag(S.nw)))
+  se.nw <- sqrt(sig_sq.nw * diag(S.nw \%*\% t(S.nw)))
+\end{mintlinebox}
+\end{sectionbox}
+
+%\subsection{}\label{subsec:smoothing_splines_and_penalized_regression}
+\begin{sectionbox}[Smoothing splines and penalized regression]\nospacing{}
+  High-order polynomials do not work, so splines are used. We discuss splines \emph{without} having to specify the knots.
+  Find $\argmin_{m \in C^{0}(\mathbb{R})} \sum_{i=1}^{n}(Y_{i} - m(x_{i}))^{2} + \lambda \int_{\mathbb{R}}m''(z)^{2} dz$.
+  Note that the minimizer is \emph{finite dimensional} --- it is a cubic spline that can be computed using a set of basis functions $m_{\lambda}(x) = \sum_{j=1}^{n}\beta_{j}B_{j}(x)$ or $||\vec{Y} - B\vec{\beta}||^{2}+\lambda \vec{\beta}^{\top}\Omega\vec{\beta} \Rightarrow \hat{\vec{\beta}} = {(B^{\top}B + \lambda\Omega)}^{-1}B^{\top}\vec{Y}$.
+  Choose $\lambda$ on the scale of $df = \mathbf{tr}(\mathcal{S}_{\lambda})$.
+  Note that this is Ridge-type regression, which saves us from being overparametrized ($n$ points, $n$ parameters).
+  In the exam, this is \emph{not} considered ``standard'' least squares.
+  \begin{mintlinebox}{R}
+    fit.ss = smooth.spline(x, y, df=df) 
+    ss.preds = predict(fit.ss, newdata=x)$y
+  \end{mintlinebox}
+\end{sectionbox}

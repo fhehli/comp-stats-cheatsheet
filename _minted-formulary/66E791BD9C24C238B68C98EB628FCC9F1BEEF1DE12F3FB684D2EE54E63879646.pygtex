@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{require}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{earth\PYGZdq{}}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{fit} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{earth}\PYG{p}{(}\PYG{n}{formula}\PYG{o}{=}\PYG{n}{y}\PYG{o}{\PYGZti{}}\PYG{n}{.}\PYG{p}{,}\PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{,} \PYG{n}{degree}\PYG{o}{=}\PYG{l+m}{2}\PYG{p}{)}
+\PYG{n+nf}{plotmo}\PYG{p}{(}\PYG{n}{fit}\PYG{p}{,} \PYG{n}{degree2}\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{,} \PYG{n}{caption}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{main effects\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

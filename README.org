@@ -1,0 +1,22 @@
+* CompStats cheat sheet
+Summary of the course /Computational Statistics (Spring 2021)/ read by Martin Mächler.
+The course material is summarized on two A4 pages, including theory and implementation details (in ~R~).
+For me this was comprehensive enough, but it's even possible to print both sides on a single A4 page, leaving you another full page to take your own notes ;)
+
+The summary is based on [[https://gitlab.ethz.ch/others/formularyETH][this formulary template]] made by Georg Pollak.
+
+*If you find any errors or you want to improve something, feel free to open a Pull Request.*
+
+** Building it
+Although a pdf file is provided, you can build the pdf yourself.
+You need to have a distribution of ~Latex~ aswell as the command-line tool ~minted~ installed (~pip install minted~). Then, clone the repository and the submodule and build it:
+#+BEGIN_SRC
+$ pdflatex --version
+pdfTeX 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) [...]
+$ pygmentize -V
+Pygments version 2.9.0 [...]
+$ git clone --recursive git@github.com:RomeoV/comp-stats-cheat-sheet.git
+$ pdflatex -shell-escape formulary.tex
+#+END_SRC
+Sometimes the first run of ~pdflatex~ fails with error ~LaTeX Error: Can be used only in preamble.~
+Cancel the compilation (with =X<Enter>=) and rerun the command.

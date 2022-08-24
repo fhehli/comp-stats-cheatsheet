@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{library}\PYG{p}{(}\PYG{n}{rpart}\PYG{p}{)}\PYG{p}{;} \PYG{n+nf}{require}\PYG{p}{(}\PYG{n}{rpart.plot}\PYG{p}{)}\PYG{p}{;}
+\PYG{c+c1}{\PYGZsh{} cp = alpha}
+\PYG{n}{rp} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{rpart}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZti{}}\PYG{n}{.}\PYG{p}{,}\PYG{n}{data} \PYG{o}{=} \PYG{n}{data}\PYG{p}{,}\PYG{n}{control}\PYG{o}{=}\PYG{n+nf}{rpart.control}\PYG{p}{(}\PYG{n}{cp}\PYG{o}{=}\PYG{l+m}{0.0}\PYG{p}{,} \PYG{n}{minsplit}\PYG{o}{=}\PYG{l+m}{30}\PYG{p}{)}\PYG{p}{)}
+\PYG{n+nf}{plotcp}\PYG{p}{(}\PYG{n}{rp}\PYG{p}{)}\PYG{p}{;} \PYG{n}{cps} \PYG{o}{=} \PYG{n+nf}{printcp}\PYG{p}{(}\PYG{n}{tree}\PYG{p}{)}
+\PYG{n}{nid} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{l+m}{10} \PYG{c+c1}{\PYGZsh{} select from plot by 1se rule}
+\PYG{n}{cp.opt} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n}{cps}\PYG{p}{[}\PYG{n+nf}{which}\PYG{p}{(}\PYG{n}{cps}\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{\PYGZsq{}}\PYG{l+s}{nsplit\PYGZsq{}}\PYG{p}{]}\PYG{o}{==}\PYG{n}{nid}\PYG{p}{)}\PYG{p}{,} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{CP\PYGZsq{}}\PYG{p}{]}
+\PYG{n}{pruned.tree} \PYG{o}{=} \PYG{n+nf}{prune.rpart}\PYG{p}{(}\PYG{n}{tree}\PYG{p}{,} \PYG{n}{cp}\PYG{o}{=}\PYG{n}{cp.opt}\PYG{p}{)}
+\end{Verbatim}

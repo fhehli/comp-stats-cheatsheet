@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{require}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{boot\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{tm} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{ind}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{n+nf}{mean}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{ind}\PYG{p}{]}\PYG{p}{,} \PYG{n}{trim} \PYG{o}{=} \PYG{l+m}{0.1}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\PYG{n}{res.boot} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{boot}\PYG{p}{(}\PYG{n}{data}\PYG{o}{=}\PYG{n}{sample}\PYG{p}{,}\PYG{n}{statistic}\PYG{o}{=}\PYG{n}{tm}\PYG{p}{,}\PYG{n}{R}\PYG{o}{=}\PYG{l+m}{10000}\PYG{p}{,}
+\PYG{n}{sim}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{ordinary\PYGZdq{}}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{} 'basic'=rev.quant., 'norm'=normal, 'perc'=quant.}
+\PYG{n+nf}{boot.ci}\PYG{p}{(}\PYG{n}{res.boot}\PYG{p}{,}\PYG{n}{conf}\PYG{o}{=}\PYG{l+m}{0.95}\PYG{p}{,}\PYG{n}{type}\PYG{o}{=}\PYG{n+nf}{c}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{basic\PYGZdq{}}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{norm\PYGZdq{}}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{perc\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+\PYG{o}{?}\PYG{n}{quantile} \PYG{o}{?}\PYG{n}{qnorm}
+\end{Verbatim}

@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{glm}\PYG{p}{(}\PYG{n}{Y}\PYG{o}{\PYGZti{}}\PYG{n}{.}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{,} \PYG{n}{family}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{binomial\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nf}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n+nf}{predict}\PYG{p}{(}\PYG{n}{fit}\PYG{p}{,} \PYG{n}{type}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{response\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0.5}\PYG{p}{)} \PYG{o}{==} \PYG{n}{data}\PYG{o}{\PYGZdl{}}\PYG{n}{Y}\PYG{p}{)}\PYG{o}{\PYGZdl{}}
+\end{Verbatim}

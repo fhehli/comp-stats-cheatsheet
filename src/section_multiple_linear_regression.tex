@@ -1,0 +1,114 @@
+\section{Linear Regression}\label{sec:multiple_linear_regression}
+\subsection{The Linear Model}\label{subsec:the_linear_model}
+\begin{sectionbox}\nospacing{}
+  Assume $Y_i = x_{i}^{\top}\beta + \epsilon_{i}$ or $Y = X \beta + \epsilon$ with $X \in \mathbb{R}^{n \times p}; (n \geq p)$ and $\mathbb{E}[\epsilon_{i}]=0, Var(\epsilon_{i}) = \sigma^{2}$.
+  $X$ is often augmented with $(1_{N\times 1})$ to use $\beta_{1}$ as bias.
+\end{sectionbox}
+\subsection{Least Squares Method}\label{subsec:least_squares_method}
+\begin{sectionbox}\nospacing{}
+  LS estimator is $\hat \beta = \argmin_{\beta} ||Y - X\beta||^{2}_{2} = {(X^{\top}X)}^{-1} X^{\top}Y $.
+  Estimate $\hat{\sigma}^{2} = \frac{1}{n-p}\sum_{i=1}^{n}(y_i-\hat{\beta}^\top x_i)^{2}$ with $\mathbb{E}[\hat{\sigma}^{2}] = \sigma^{2}$.
+\end{sectionbox}
+
+\begin{notebox}[Assumptions for Linear Model]\nospacing{}
+  \begin{enumeratenosep}[label=\roman*]
+    \item Linear regression equation is correct, i.e. $\mathbb{E}[\epsilon_{i}]=0\ \forall i$.
+    \item We measure $x_{i}$'s exactly. Else, need correction (?).
+    \item Error is homoscedastic, i.e. $Var(\epsilon_{i})=\sigma^{2}\ \forall i$. Else, use ``Weighted LS''.
+    \item Errors are uncorrelated, i.e. $Cov(\epsilon_{i}, \epsilon_{j}) = 0\ \forall i \neq j$. Else ``Generalized LS''.
+    \item Errors are jointly normally distributed. Else ``Robust Methods''.
+  \end{enumeratenosep}
+\end{notebox}
+
+\begin{notebox}[Moments of least squares estimates]\nospacing{}
+  Assume $\vec{Y}=X\vec{\beta} + \epsilon, \mathbb{E}[\vec{\epsilon}]=\vec{0},\ Cov(\vec{\epsilon} \vec{\epsilon}^{\top}) = \sigma^{2}I$ (all assumptions satisfied). Then
+  \begin{enumeratenosep}[label=\roman*]
+    \item $\mathbb{E}[\hat{\vec{\beta}}] = \vec{\beta}$ ($\hat{\vec{\beta}}$ is unbiased).
+    \item $\mathbb{E}[\hat{\vec{Y}}] = \mathbb{E}[\vec{Y}] = X\vec{\beta}$ and $\mathbb{E}[\vec{r}] = \vec{0}$.
+    \item $Cov(\hat{\vec{\beta}}) = \sigma^{2}{(X^{\top}X)^{-1}}$.
+    \item $Cov(\hat{\vec{Y}}) = \sigma^{2} P, Cov(\vec{r}) = \sigma^{2}(I-P), P=X(X^\top X)^{-1}X^\top$.
+  \end{enumeratenosep}
+  If additionally $\epsilon_{i}, \dots, \epsilon_{n} \text{ i.i.d. } \sim \mathcal{N}(0, \sigma^{2})$, then
+  \begin{enumeratenosep}[label=\roman*]
+    \item $\hat{\vec{\beta}} \sim \mathcal{N}_{p}{(\vec{\beta}, \sigma^{2}(X^{\top}X)^{-1})}$
+    \item $\hat{\vec{Y}} \sim \mathcal{N}_{n}(X\vec{\beta}, \sigma^{2}),\ \vec{r} \sim \mathbb{N}_{n}(\vec{0}, \sigma^{2}(I-P))$
+    \item $\hat \sigma^{2} \sim \frac{\sigma^{2}}{n-p}\chi^{2}_{n-p}$.
+  \end{enumeratenosep}
+  Even when normality assumption doesn't hold, central limit theorem is a justification.
+\end{notebox}
+
+
+\subsection{Tests and Confidence Regions}\label{subsec:tests_and_confidence_regions}
+\begin{sectionbox}[T-test]\nospacing{}
+  Assume linear model with Gaussian errors (or ``large enough'' sample size), s.t. $\hat{\vec{\beta}} \sim \mathcal{N}_{p}\left(\vec{\beta}, \sigma^{2}{(X^{\top}X)}^{-1}\right)$ is normally distributed.
+  Then we can test the null-hypothesis $H_{0,j}: \beta_{j = 0}$ against $H_{A,j}: \beta_{j \neq 0}$:
+  \[\frac{\hat \beta_{j}}{\sqrt{\sigma^{2}{{(X^{\top}X)}^{-1}_{jj}}}} \sim \mathcal{N}(0,1) \Rightarrow  T_{j} = \frac{\hat \beta_{j}}{\sqrt{\hat \sigma^{2}{{(X^{\top}X)}^{-1}_{jj}}}} \sim t_{n-p}\ \] under the null-hypothesis $H_{0,j}$. Unknown $\sigma^{2}$ is replaced by $\hat \sigma^{2}$. Note that $t_{n-p} \approx \mathcal{N}$.
+  An individual t-test for $H_{0,j}$ gives the effect of $\beta_{j}$ after subtracting the linear effect of all $\beta_{i\neq j}$.
+  Note that in \verb!summary.lm!, the term \emph{Std. Error} is $\sqrt{\hat \sigma^{2}{{(X^{\top}X)}^{-1}_{jj}}} = \sqrt{\hat{Var}(\hat \beta_{j})}$. Finally, we can also build a confidence interval using $\hat \beta_{j} \pm \sqrt{\hat \sigma^{2}{{(X^{\top}X)}^{-1}_{jj}}} \cdot t_{n-p;1-\alpha/2}$.
+\begin{mintlinebox}{R}
+  confint(fit, level=0.95)
+\end{mintlinebox}
+\end{sectionbox}
+
+\begin{sectionbox}[Global null hypothesis and ANOVA]\nospacing{}
+  We can also check the global null-hypothesis $H_{0}: \beta_{2} = \cdots = \beta_{p} = 0$ using an \emph{analysis of variance}<, which decomposes
+  \[||\vec{Y} - \bar{\vec{Y}}||^{2}_{2} = ||\hat{\vec{Y}} - \bar{\vec{Y}}||^{2}_{2} + ||\vec{Y} - \hat{\vec{Y}}||^{2}_{2}.\]
+  Under the global null-hypothesis $\mathbb{E}[\vec{Y}] = \mathbb{E}[\bar{\vec{Y}}] = const$. (no effect of predictor variables). $\sigma^{2}/ \hat \sigma^{2}$ yields F-statistic:
+  \[F = \frac{||\hat{\vec{Y}} - \bar{\vec{Y}}||^{2}/(p-1)}{||\vec{Y} - \hat{\vec{Y}}||^{2} / (n-p)} \sim F_{p-1,n-p}\] under the global null-hypothesis $H_{0}$.
+  ANOVA also yields \emph{goodness of fit} $R^{2} = \frac{||\hat{\vec{Y}} - \bar{\vec{Y}}||^{2}}{||\vec{Y} - \bar{\vec{Y}}||^{2}}$, which should be close to 1.
+\begin{mintlinebox}{R}
+  anova(fit) # global F test
+  # partial F test - sig. of predictors in .full but not .part
+  anova(fit.part, fit.full)
+\end{mintlinebox}
+\end{sectionbox}
+
+\subsection{Checking Model Assumptions}\label{subsec:checking_model_assumptions}
+\begin{sectionbox}[Tukey-Anscombe Plot]\nospacing{}
+  Error should fluctuate randomly. If error increases linearly, do log-transform $\vec{Y} \mapsto \log{\vec{Y}}$. If error increases with $\sqrt{Y}$, do a square-root-transform $\vec{Y} \mapsto \sqrt{\vec{Y}}$.
+  \begin{mintlinebox}{R}
+    plot(fit, which=1) # Tukey-Anscombe plot
+  \end{mintlinebox}
+\end{sectionbox}
+\begin{sectionbox}[QQ-Plot/Normal-Plot]\nospacing{}
+  Plot empirical quantiles of residuals on y versus the theoretical quantiles of $\mathcal{N}(0,1)$ on x.
+  If assumption holds, get straight line with intercept $\mu$ and slope $\sigma$.
+  Z-shape: long-tailed distr.; Curved: skewed distr.
+  \begin{mintlinebox}{R}
+    plot(fit, which=2) # QQ-plot
+  \end{mintlinebox}
+\end{sectionbox}
+
+\subsection{Model Selection}\label{subsec:model_selection}
+\begin{sectionbox}\nospacing{}
+  Assume again $\mathbb{E}[\epsilon_{i}] = 0, Var(\epsilon_{i} = \sigma^{2})$.
+  We need to address \emph{bias-variance trade-off}.
+  Bias is defined as $\mathbb{E} [\hat f(x)] - f(x)$, variance as $q/n \cdot \sigma^{2}$ with $q \leq p$.
+\end{sectionbox}
+\begin{sectionbox}[Mallows $C_{p}$ statistic]\nospacing{}
+  Let $SSE(d)$ be the residual sum of squares.
+  Then $n^{-1} \sum_{i=1}^{n} \mathbb{E}\left[{(f(x) - \hat f(x))}^{2}\right] \approx n^{-1}SSE(d)-\hat \sigma^{2} + 2\hat\sigma^{2}d/n$.
+  Thus, we search for the model that minimizes $C_{p}(\mathcal{M}) = \frac{SSE(d)}{\hat \sigma^{2}} - n + 2d$.
+  Alternatively, use AIC $=2d-2\log \hat{L}$, where $\hat{L}=$ maximal value of likelihood, or BIC. AIC is equivalent to $C_{p}$ for linear Gaussian models.
+  \begin{mintlinebox}{R}
+    # All subsets regression
+    require(leaps)
+    fit.all = regsubsets(y~., data=data)
+    p.regsubsets(fit.all)
+  \end{mintlinebox}
+\end{sectionbox}
+\begin{sectionbox}[Forwards and backwards selection]\nospacing{}
+  \textbf{Forward selection:} (i) Start with empty model. (ii) (Greedily) Keep adding variable that reduces the residual sum of squares the most. (iii) When done, pick submodel which minimizes $C_{p}$.
+
+  \textbf{Backward selection:} (i) Start with full model. (ii) (Greedily) Keep excluding predictor that increases the residual sum of squares the least. (iii) When done, pick submodel which minimizes $C_{p}$.
+  Backwards selection typically better but more expensive. When $p \geq n$, use forward selection.
+  Both methods prone to overfitting --- p-values (and similar values) are \emph{not} valid anymore and effects look too significant.
+  \begin{mintlinebox}{R}
+    # Backward / forward selection
+    fit.empty = lm(y~1, data=data)
+    fit.full = lm(y~., data=data)
+    fit.bw = step(fit.full, direction="backward")
+    fit.fw = step(fit.empty, direction="forward", scope=list(upper=fit.full,lower=fit.empty)
+  \end{mintlinebox}
+
+\end{sectionbox}

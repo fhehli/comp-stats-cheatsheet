@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{require}\PYG{p}{(}\PYG{n}{leaps}\PYG{p}{)}\PYG{p}{;} \PYG{n}{fit.all} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{regsubsets}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZti{}}\PYG{n}{.}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{)}
+\PYG{n+nf}{p.regsubsets}\PYG{p}{(}\PYG{n}{fit.all}\PYG{p}{)}
+\end{Verbatim}

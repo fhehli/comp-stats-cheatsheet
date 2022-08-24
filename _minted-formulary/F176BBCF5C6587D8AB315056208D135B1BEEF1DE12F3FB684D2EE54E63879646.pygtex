@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{require}\PYG{p}{(}\PYG{n}{MASS}\PYG{p}{)}\PYG{p}{;}\PYG{n}{mle}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{fitdistr}\PYG{p}{(}\PYG{n}{boogg}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{gamma\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{fun.theta} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{n+nf}{quantile}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{probs} \PYG{o}{=} \PYG{l+m}{0.75}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\PYG{n}{fun.gen} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{function}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{mle}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{n+nf}{rgamma}\PYG{p}{(}\PYG{n+nf}{length}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{p}{,}\PYG{n}{shape}\PYG{o}{=}\PYG{n}{mle}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}\PYG{n}{rate}\PYG{o}{=}\PYG{n}{mle}\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\PYG{n}{res.boot} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{boot}\PYG{p}{(}\PYG{n}{data}\PYG{p}{,} \PYG{n}{fun.theta}\PYG{p}{,} \PYG{n}{R}\PYG{o}{=}\PYG{l+m}{1000}\PYG{p}{,} \PYG{n}{sim}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{parametric\PYGZdq{}}\PYG{p}{,} \PYG{n}{ran.gen}\PYG{o}{=}\PYG{n}{fun.gen}\PYG{p}{,} \PYG{n}{mle}\PYG{o}{=}\PYG{n}{fit.gamma}\PYG{o}{\PYGZdl{}}\PYG{n}{estimate}\PYG{p}{)}\PYG{p}{;} \PYG{o}{\PYGZdl{}}
+\end{Verbatim}

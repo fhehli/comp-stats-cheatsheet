@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit.empty} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{lm}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZti{}}\PYG{l+m}{1}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{)}
+\PYG{n}{fit.full} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{lm}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZti{}}\PYG{n}{.}\PYG{p}{,} \PYG{n}{data}\PYG{o}{=}\PYG{n}{data}\PYG{p}{)}
+\PYG{n}{fit.bw} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{step}\PYG{p}{(}\PYG{n}{fit.full}\PYG{p}{,} \PYG{n}{direction}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{backward\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{fit.fw} \PYG{o}{\PYGZlt{}\PYGZhy{}} \PYG{n+nf}{step}\PYG{p}{(}\PYG{n}{fit.empty}\PYG{p}{,} \PYG{n}{direction}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{forward\PYGZdq{}}\PYG{p}{,} \PYG{n}{scope}\PYG{o}{=}\PYG{n+nf}{list}\PYG{p}{(}\PYG{n}{upper}\PYG{o}{=}\PYG{n}{fit.full}\PYG{p}{,}\PYG{n}{lower}\PYG{o}{=}\PYG{n}{fit.empty}\PYG{p}{)}
+\end{Verbatim}

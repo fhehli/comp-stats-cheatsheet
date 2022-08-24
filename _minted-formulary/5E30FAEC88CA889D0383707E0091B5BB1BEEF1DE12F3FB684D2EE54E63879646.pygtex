@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{ksmooth}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{p}{,} \PYG{n}{kernel}\PYG{o}{=}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{normal\PYGZdq{}}\PYG{p}{,} \PYG{n}{bandwidth}\PYG{o}{=}\PYG{l+m}{0.2}\PYG{p}{,} \PYG{n}{x.points}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZdl{}}\PYG{n}{y}\PYG{o}{\PYGZdl{}}
+\end{Verbatim}

@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{\PYGZsh{} automatic bandwidth}
+\PYG{n}{fit.lo}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{lokerns}\PYG{p}{(}\PYG{n}{X}\PYG{p}{,} \PYG{n}{Y}\PYG{p}{,} \PYG{n}{x.out}\PYG{o}{=}\PYG{n}{X}\PYG{p}{,} \PYG{n}{hetero}\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,} \PYG{n}{is.rand}\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
+\PYG{n}{fit.gl}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{glkerns}\PYG{p}{(}\PYG{n}{X}\PYG{p}{,} \PYG{n}{Y}\PYG{p}{,} \PYG{n}{x.out}\PYG{o}{=}\PYG{n}{X}\PYG{p}{,} \PYG{n}{hetero}\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,} \PYG{n}{is.rand}\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
+\end{Verbatim}

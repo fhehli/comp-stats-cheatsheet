@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{anova}\PYG{p}{(}\PYG{n}{fit}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} global F test}
+\PYG{c+c1}{\PYGZsh{} partial F test - sig. of predictors in .full but not .part}
+\PYG{n+nf}{anova}\PYG{p}{(}\PYG{n}{fit.part}\PYG{p}{,} \PYG{n}{fit.full}\PYG{p}{)}
+\end{Verbatim}

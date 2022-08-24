@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{fit.ss}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{smooth.spline}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y\PYGZus{}pert}\PYG{p}{,} \PYG{n}{spar}\PYG{o}{=}\PYG{l+m}{0.6}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} attr. cvcrit = loocv}
+\PYG{n}{fit.ss.pred}\PYG{p}{[}\PYG{p}{,} \PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{n+nf}{predict}\PYG{p}{(}\PYG{n}{fit.ss}\PYG{p}{,} \PYG{n}{newdata}\PYG{o}{=}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZdl{}}\PYG{n}{y} \PYG{p}{;} \PYG{o}{\PYGZdl{}}
+\end{Verbatim}

@@ -1,0 +1,24 @@
+\section{Density Estimation}\label{sec:nonparametric_density_estimation}
+\begin{sectionbox}[Kernel estimator]
+  Estimate density $\hat f(x) = \frac{1}{nh}\sum_{i=1}^n w((x-X_i)/h)$.
+  Kernels include (i) rectangular ($w(x) = 0.5\cdot\mathds{1}_{|x|<1}$), (ii) triangular, or (iii) Gaussian.
+  We require $\int_\mathbb{R}K(x)dx = 1$.
+  The bandwidth parameter $h$ is crucial and determines the ``smoothness'' of the density estimate.
+\end{sectionbox}
+\begin{sectionbox}[Choosing a bandwidth $h$]\nospacing{}
+  A simple approach is using $k$-nearest neighbors, i.e. $h(x)=\max_{x_i \in \mathit{KNN}_k(x)} ||x-x_i||_2$ with tuning parameter $k$.
+  Note that $\int_\mathbb{R} K(x)dx = 1$ might be violated.
+  Naturally, the bandwidth also induces a \emph{bias-variance trade-off}.
+  Note that
+  \(
+  MSE(x) = \mathbb{E}\left[\left(\hat f(x)-f(x)\right)^2\right]=\left(\mathbb{E}[\hat f(x)] - f(x)\right)^2 + Var(\hat f(x))
+  \), so we can try to minimize the integrated $MSE$ over all points to find the best bandwidth.
+
+%   If we know $f$ and $f''$ we can compute the bias and variance analytically (up to some precision).
+%   From this we can derive global asymptotically optimal bandwidths, which can be useful if we can at least estimate $f$ and $f''$, and this can also be extended to local bandwidths.
+\end{sectionbox}
+\begin{sectionbox}[Density estimation in higher dimensions]\nospacing{}
+  Basically use $\hat f(\vec{x}) = \frac{1}{nh^d}\sum_{i=1}^nK((\vec{x}-\vec{X}_i)/h)$ with a Kernel that supports vectors.
+  The Gaussian kernel is the only one that is radially symmetric.
+  Note that in higher dimensions, density estimation becomes very hard, due to data points becoming very sparse.
+\end{sectionbox}

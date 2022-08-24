@@ -1,0 +1,42 @@
+\section{Classification}\label{sec:classification}
+Given $(X_1, Y_1), \dots, (X_n,Y_n)$ i.i.d. with $Y_i \in \{0, \dots, J-1\}$, determine $\pi_j(x) = \mathbb{P}[Y=j\mid X=x]\ \forall j = 0,1,\dots,J-1$.
+The optimal classifier is $\mathcal{C}_{\textrm Bayes}(x) = \argmax_{0\leq j\leq J-1}\pi_j(x)$.
+Then Bayes risk for the 0-1-loss is $\mathbb{P}[\mathcal{C}_{\textrm Bayes}(X_{\textrm new}) \neq Y_{\textrm new}]$.
+
+\begin{sectionbox}[Discriminant analysis]\nospacing{}
+  \textbf{LDA: }Assume \mbox{$X \mid Y=j \sim \mathcal{N}(\mu_j, \Sigma), \mathbb{P}[Y=j] = p_j$,}.
+  Then by Bayes formula $$\pi_j(x) = \frac{f_{X|Y=j}(x)\cdot p_j}{\sum_{k=0}^{J-1}f_{X|Y=k}(x)\cdot p_k}$$ with each $f_{X|Y=j}$ a Gaussian $\mathcal{N}(\mu_j, \Sigma)$.
+  We can estimate $\mu_j$ and $\Sigma$ by the (closed-form) MLEs, and we also need a prior for $Y$, which often is fixed as $\hat p_j=n_j/n$.
+  This results in $\hat \delta_j(x) = (x-\hat{\mu}_j/2)^{\top}\Sigma^{-1}\hat{\mu}_j+\log(\hat p_j)$ with linear (in $x$) decision boundaries $\hat{\delta}_j(x) = \hat \delta_{j'}(x)$ and $\mathcal{C}(x) = \argmax_j \hat \delta_j(x)$.
+
+  \textbf{QDA: } Now we assume different $\Sigma_j$ for each class and obtain quadratic decision boundaries $\hat{\delta}_j(x) = -\log(\det(\hat\Sigma_j))/2 - (x-\hat{\mu}_j)^{\top}\hat{\Sigma}_j^{-1}(x-\hat{\mu}_j)/2 + \log(\hat p_j)$.
+  The price: $J\cdot p(p+1)/2$ parameters (for all $\Sigma_j$) vs. $p(p+1)/2$ for a single $\Sigma$.
+    \begin{mintlinebox}{R}
+    require(MASS)
+    class_lda = lda(x=df[, c("x1", "x2")], grouping=df[, "y"])
+  \end{mintlinebox}
+\end{sectionbox}
+
+\begin{sectionbox}[Logistic regression for binary classification]\nospacing{}
+  Given some model $g: \mathbb{R}^p \to \mathbb{R}$ (e.g. a linear model) we can use the logistic transform $\pi \mapsto \log(\pi/(1-\pi))$ to get probabilities: $\log(\pi(x)/(1-\pi(x))) = g(x)$ and $\pi(x) = 1/(1+\exp{(-g(x))})$.
+  This implies $Y_i \sim \text{Bernoulli}(\pi(x_i))$ (e.g. weighted coin flip). The likelihood is thus $\prod_{i=1}^n\pi(x_i)^{Y_i}(1-\pi(x_i))^{1-Y_i}$.
+  We typically estimate $\vec{\beta}$ using gradient descent.
+  As $n\to \infty$ we can asymptotically compute the standard errors $\widehat{s.e.}(\hat{\beta}_j)$ and t-test statistics $\hat\beta_j/\widehat{s.e.}(\hat\beta_j) \sim \mathcal{N}(0,1)$ (under $H_{0,j}: \beta_j=0)$.
+  \begin{mintlinebox}{R}
+    fit = glm(Y~., data=data, family="binomial")
+    mean((predict(fit, type="response") > 0.5) == data$Y)
+  \end{mintlinebox}
+\end{sectionbox}
+\begin{notebox}[Linear predictors]\nospacing{}
+  Note that both \emph{LDA} and \emph{Logistic regression} are \emph{linear} in the prediction variables.
+  For LDA that comes from the Gaussian assumption (i.e. ``linearization'' of the true distribution), for Logistic regression it comes from the linear log-odds function.
+\end{notebox}
+\begin{notebox}[Multiclass case ($J>2$)]\nospacing{}
+  \begin{enumeratenosep}
+    \item $J$ classes $\rightarrow$ $J$ binary variables: $\tilde \pi_j(x) = \frac{\hat pi_j(x)}{\sum_{j=0}^{J-1}\hat\pi_j(x)}$
+    \item Using \emph{multinomial distribution} (parametric linear logistic) (see \verb!multinom!)
+    \item ``Reference class'' $\log(\pi_j(x)/\pi_0(x)) = g_j(x)$
+    \item Pairwise 1-vs-1, fitting ${J \choose 2}\cdot p$ parameters
+    \item Exploiting ``ordered'' classes with proportional odds
+  \end{enumeratenosep}
+\end{notebox}
