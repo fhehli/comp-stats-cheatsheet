@@ -100,8 +100,8 @@ We fight the \emph{curse of dimensionality} by making some structural assumption
 
 \subsection{Ridge and Lasso}%
 \label{sub:ridge_and_lasso}
-Trade-off between $||\beta||_1$ and $||\beta||_2$ regularization, i.e. $L(\lambda_1, \lambda_2, \vec{\beta})=||\vec{Y}-X\vec{\beta}||_2^2 + \lambda_2||\vec{\beta}||_2^2+\lambda_1||\vec{\beta}||_1$ with $\alpha=\lambda_2/(\lambda_1+\lambda_2)$.
-$\alpha=1 \Leftrightarrow \lambda_2=1$ means full $L_2$-regularization, i.e.\ \emph{Lasso}, otherwise \emph{Ridge}.
+Trade-off between $||\beta||_1$ and $||\beta||_2$ regularization, i.e. $L(\lambda_1, \lambda_2, \vec{\beta})=||\vec{Y}-X\vec{\beta}||_2^2 + (1-\alpha)/2||\vec{\beta}||_2^2+\alpha||\vec{\beta}||_1$.
+$\alpha=1 \Leftrightarrow \lambda_2=1$ means full $L_2$-regularization, i.e.\ \emph{Ridge}, otherwise \emph{LASSO}.
 
 \begin{mintlinebox}{R}
   ridge <- glmnet(x.train, y.train, lambda=100, alpha=1)

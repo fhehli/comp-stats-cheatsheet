@@ -1,13 +1,19 @@
-* CompStats cheat sheet
-Summary of the course /Computational Statistics (Spring 2021)/ read by Martin Mächler.
-The course material is summarized on two A4 pages, including theory and implementation details (in ~R~).
-For me this was comprehensive enough, but it's even possible to print both sides on a single A4 page, leaving you another full page to take your own notes ;)
+* CompStats cheatsheet
+Cheatsheet for the course /Computational Statistics (Spring 2022)/ read by N. Meinshausen.
 
-The summary is based on [[https://gitlab.ethz.ch/others/formularyETH][this formulary template]] made by Georg Pollak.
+This if a fork of [[https://github.com/RomeoV/comp-stats-cheat-sheet][this cheatsheet]].
 
 *If you find any errors or you want to improve something, feel free to open a Pull Request.*
 
-** Building it
+** Building with Overleaf
+
+I used the GitHub integration provided by [[overleaf.com]][Overleaf]] to import this repository
+into an Overleaf project. Overleaf then takes care of everything you need and you can
+compile the document easily without needing to install anything locally.
+
+** Local build instructions 
+In case you want to compile locally, here are the instructions provided by [[https://github.com/RomeoV/][RomeoV]].
+
 Although a pdf file is provided, you can build the pdf yourself.
 You need to have a distribution of ~Latex~ aswell as the command-line tool ~minted~ installed (~pip install minted~). Then, clone the repository and the submodule and build it:
 #+BEGIN_SRC
