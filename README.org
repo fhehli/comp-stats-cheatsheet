@@ -7,7 +7,7 @@ This if a fork of [[https://github.com/RomeoV/comp-stats-cheat-sheet][this cheat
 
 ** Building with Overleaf
 
-I used the GitHub integration provided by [[overleaf.com]][Overleaf]] to import this repository
+I used the GitHub integration provided by [[overleaf.com][Overleaf]] to import this repository
 into an Overleaf project. Overleaf then takes care of everything you need and you can
 compile the document easily without needing to install anything locally.
 
